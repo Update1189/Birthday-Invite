@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xyleek's 1st Birthday Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Fredoka One', cursive;
+    background: url('cocobackground.jpg') center/cover no-repeat;
+    overflow-x: hidden;
+  }
+  .invite-container {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+    margin: 30px auto;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .countdown {
+    font-size: 1.4rem;
+    color: #0077b6;
+    margin-bottom: 15px;
+  }
+  .title {
+    font-size: 2.2rem;
+    color: #0077b6;
+    margin-top: 10px;
+  }
+  /* Baby photo styling */
+  .photo-placeholder {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 8px solid #0077b6;
+    margin: 20px auto;
+    overflow: hidden;
+  }
+  .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .details {
+    font-size: 1.1rem;
+    color: #333;
+    margin-top: 20px;
+  }
+  .details p {
+    margin: 8px 0;
+  }
+  .btn-container {
+    margin-top: 20px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 12px 18px;
+    margin: 8px;
+    border-radius: 30px;
+    background: #0077b6;
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn:hover {
+    background: #023e8a;
+  }
+  /* Balloons styling */
+  .balloon {
+    position: absolute;
+    width: 70px;
+    opacity: 0.9;
+    z-index: 1;
+  }
+  .balloon1 { top: -80px; left: 10%; }
+  .balloon2 { top: -80px; right: 10%; }
+  .balloon3 { bottom: -80px; left: 50%; transform: translateX(-50%); }
+</style>
+</head>
+<body>
+
+<div class="invite-container">
+  <!-- Countdown -->
+  <div class="countdown" id="countdown">Loading countdown...</div>
+
+  <!-- Title -->
+  <h1 class="title">Xyleek Iremide Turns 1!</h1>
+
+  <!-- Baby Photo -->
+  <div class="photo-placeholder">
+    <img src="mybby.jpg" alt="Birthday Baby">
+  </div>
+
+  <!-- Details -->
+  <div class="details">
+    <p>🎉 Join us for an amazing birthday party!</p>
+    <p><strong>Date:</strong> September 14, 2025</p>
+    <p><strong>Time:</strong> 2:00 PM</p>
+    <p><strong>Venue:</strong> Palms Ibadan Mall, opp. High Court, MKO Abiola Way, Ibadan</p>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-container">
+    <a class="btn" href="https://maps.google.com/?q=Palms+Ibadan+Mall+MKO+Abiola+Way" target="_blank">📍 View Map</a>
+    <a class="btn" href="tel:+2349039007956">📞 Call</a>
+    <a class="btn" href="https://wa.me/2349039007956" target="_blank">💬 WhatsApp</a>
+  </div>
+
+  <!-- Balloons -->
+  <img src="originalbaloon1.png" class="balloon balloon1">
+  <img src="originalbaloon2.png" class="balloon balloon2">
+  <img src="originalbaloon3.png" class="balloon balloon3">
+</div>
+
+<script>
+// Countdown Timer
+const countdownElement = document.getElementById('countdown');
+const eventDate = new Date('September 14, 2025 14:00:00').getTime();
+setInterval(() => {
+  const now = new Date().getTime();
+  const distance = eventDate - now;
+  if (distance < 0) {
+    countdownElement.innerHTML = "🎂 It's party time!";
+    return;
+  }
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s to go`;
+}, 1000);
+
+// GSAP Animations
+gsap.from('.title', {duration: 1.5, y: -50, opacity: 0, ease: 'bounce'});
+gsap.from('.details', {duration: 1.5, opacity: 0, delay: 0.8});
+gsap.from('.btn', {duration: 1, y: 50, opacity: 0, stagger: 0.3, delay: 1.2});
+
+// Floating Balloons
+gsap.to('.balloon1', { y: 100, duration: 3, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+gsap.to('.balloon2', { y: 120, duration: 4, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+gsap.to('.balloon3', { y: 80, duration: 3.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+
+// Confetti Burst on Page Load
+function launchConfetti() {
+  const duration = 5 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+    const particleCount = 50 * (timeLeft / duration);
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+  }, 250);
+}
+window.onload = launchConfetti;
+</script>
+</body>
+</html>
